@@ -25,14 +25,13 @@ def fetchHashtag():
         # print(media)
         media.extend(media_batch)
         print(len(media_batch))
-        print("Kartik")
+        # print("Kartik")
         # ref = db.collection(u'posts').document().set(media)
 
-        # print( len(media) )
+        print( len(media) )
         batch = db.batch()
     for i in range( len(media)):
-        # print (media[i]["node"]["id"])
-        # print (media[i]["node"]["taken_at_timestamp"])
+        
         post_ref = db.collection(u'boxwinner').document(media[i]["node"]["id"])
         toPush = media[i]["node"]
         toPush["owner_id"] = toPush["owner"]["id"]
@@ -41,12 +40,14 @@ def fetchHashtag():
         # print(profile.username)
         toPush["owner_username"] = profile.username
         if (db.collection('boxwinner').document(media[i]["node"]["id"]).get().exists):
-            # print("push")
-            batch.update(post_ref, toPush)
+            print(" ")
+            # batch.update(post_ref, toPush)
         # elif(db.collection('boxwinner').document(media[i]["node"]["fullfilled"]).get().exists):
         #     print("here")
         else:
-            # print("pass")
+            print (media[i]["node"]["id"])
+            print (media[i]["node"]["taken_at_timestamp"])
+            print("pass")
             batch.set(post_ref, toPush)
             pass
 
