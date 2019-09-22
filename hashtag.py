@@ -37,10 +37,13 @@ def fetchHashtag():
         profile = instaloader.Profile.from_id(L.context, ID)
         # print(profile.username)
         toPush["owner_username"] = profile.username
+       
         if (db.collection('boxwinner').document(media[i]["node"]["id"]).get().exists == False):
             print (media[i]["node"]["id"])
             print (media[i]["node"]["taken_at_timestamp"])
             print("pass")
+            client.publish("VMC/1035/VEND_ORDER_ITEM",'{"cmd":"G","oiid":2,"oid":"1"}')#publish
+            toPush["fullfilled"] = True
             batch.set(post_ref, toPush)
 
     batch.commit()
@@ -52,8 +55,8 @@ def on_snapshot(col_snapshot, changes, read_time):
     print(u'Current Content:')
     
     for change in changes:
+        
         if change.type.name == 'ADDED':
-            client.publish("VMC/1035/VEND_ORDER_ITEM",'{"cmd":"b","oiid":2,"oid":"1"}')#publish
             print(u'New Content: {}'.format(change.document.id))
         elif change.type.name == 'MODIFIED':
             print(u'Modified Content: {}'.format(change.document.id))
